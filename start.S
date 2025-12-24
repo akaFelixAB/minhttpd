@@ -27,7 +27,7 @@ make_call(exit, 60)
 
 .global _start
 _start:
-    xor rdi, rdi
+    xor rbp, rbp
     pop rdi         // argc 
     mov rsi, rsp    // argv
     call main
