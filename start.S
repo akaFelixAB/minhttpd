@@ -1,0 +1,34 @@
+.intel_syntax noprefix
+
+/* functions: rdi, rsi, rdx, rcx, r8, r9 */
+/*  syscalls: rdi, rsi, rdx, r10, r8, r9 */
+/*                           ^^^         */
+
+.global _syscall
+_syscall:
+    mov r10, rcx
+    syscall
+    ret
+
+#define make_call(call_name, call_number) \
+.global call_name; \
+call_name:; \
+    mov eax, call_number; \
+    jmp _syscall
+
+make_call(read, 0)
+make_call(write, 1)
+make_call(close, 3)
+make_call(socket, 41)
+make_call(accept, 43)
+make_call(bind, 49)
+make_call(listen, 50)
+make_call(exit, 60)
+
+.global _start
+_start:
+    xor rdi, rdi
+    pop rdi         // argc 
+    mov rsi, rsp    // argv
+    call main
+    call exit
