@@ -34,10 +34,7 @@ unsigned long strlen(const char* str) {
 }
 
 uint16_t swap_uint16(uint16_t x) {  // Turn into big endian
-    return (
-        ((x << 8) & 0xFF00) |
-        ((x >> 8) & 0x00FF)
-    ); 
+    return (((x << 8) & 0xFF00) | ((x >> 8) & 0x00FF));
 }
 
 #define print(s) write(stdout, s, strlen(s))
@@ -50,8 +47,7 @@ uint16_t swap_uint16(uint16_t x) {  // Turn into big endian
     eprintln("FATAL: " s); \
     exit(1)
 
-#define perror(s)             \
-    eprintln("FATAL: " s)
+#define perror(s) eprintln("FATAL: " s)
 
 int tcp_listen(int port) {
     static sockaddr_in_t addr;
@@ -86,16 +82,14 @@ int main(int argc, char* argv[]) {
         while (1) {
             n = read(clientfd, buf, sizeof(buf));
             if (n > 0) {
-                print("recieved: ");
+                print("received: ");
                 write(stdout, buf, n);
             } else {
-                if (n < 0) {
-                    perror("write");
-                }
-                break; 
+                if (n < 0) perror("read");
+                break;
             }
         }
-        close(clientfd); 
+        close(clientfd);
     }
     return 0;
 }

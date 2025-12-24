@@ -31,7 +31,7 @@ curl http://127.0.0.1:8080/
 ```
 
 ## What to expect ⚠️
-- The server accepts TCP connections on port `8080`. It reads bytes from the client and prints them to stdout prefixed with `recieved: ` (note: spelling comes from source).
+- The server accepts TCP connections on port `8080`. It reads bytes from the client and prints them to stdout prefixed with `received: ` (note: spelling comes from source).
 - This is not a full HTTP implementation — it's a minimal educational echo-server.
 
 ## Files of interest 📁
