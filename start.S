@@ -30,5 +30,7 @@ _start:
     xor rbp, rbp
     pop rdi         // argc 
     mov rsi, rsp    // argv
+    and rsp, -16    // align stack
+    sub rsp, 8      // shadow space
     call main
     call exit
