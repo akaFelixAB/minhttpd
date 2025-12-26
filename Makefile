@@ -14,7 +14,7 @@ CFLAGS_DEBUG := $(COMMON_FLAGS) -g -O0 -fno-omit-frame-pointer
 LDFLAGS_DEBUG := $(COMMON_FLAGS)
 
 CFLAGS_RELEASE := $(COMMON_FLAGS) -O2 -s -pedantic -fno-unwind-tables -fno-asynchronous-unwind-tables -fno-stack-protector
-LDFLAGS_RELEASE := $(COMMON_FLAGS) -Wl,-n -Wl,--gc-sections -Wl,--strip-all -Wl,--build-id=none -Wl,-z,separate-code -Wl,-z,noexecstack
+LDFLAGS_RELEASE := $(COMMON_FLAGS) -T minhttpd.ld -Wl,-n -Wl,--gc-sections -Wl,--strip-all -Wl,--build-id=none -Wl,-z,separate-code -Wl,-z,noexecstack
 
 .PHONY: all debug release clean
 
