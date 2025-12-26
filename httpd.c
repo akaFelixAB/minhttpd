@@ -25,7 +25,7 @@ int listen(int socket, int backlog);
 int accept(int socket, void* address, unsigned long* address_len);
 int close(int fildes);
 
-int exit(int status);
+void exit(int status) __attribute__((noreturn));
 
 unsigned long strlen(const char* str) {
     const char* ptr;

@@ -36,7 +36,7 @@ _start:
 
     and rsp, -16        // align stack
     sub rsp, 8          // shadow space
-    
+
     call main
     call exit
 
