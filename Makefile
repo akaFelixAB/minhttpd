@@ -8,13 +8,40 @@ SRCS := start.S httpd.c
 BASENAMES := $(basename $(notdir $(SRCS)))
 OBJS := $(addprefix $(OBJDIR)/,$(addsuffix .o,$(BASENAMES)))
 
-COMMON_FLAGS := -std=c11 -nostdlib -ffreestanding -static -Wall
+COMMON_FLAGS := \
+	-std=c11 \
+	-nostdlib \
+	-ffreestanding \
+	-static \
+	-Wall
 
-CFLAGS_DEBUG := $(COMMON_FLAGS) -g -O0 -fno-omit-frame-pointer
-LDFLAGS_DEBUG := $(COMMON_FLAGS)
+CFLAGS_DEBUG := $(COMMON_FLAGS) \
+	-g \
+	-O0 \
+	-fno-omit-frame-pointer
 
-CFLAGS_RELEASE := $(COMMON_FLAGS) -O2 -s -pedantic -fno-unwind-tables -fno-asynchronous-unwind-tables -fno-stack-protector
-LDFLAGS_RELEASE := $(COMMON_FLAGS) -T minhttpd.ld -Wl,-n -Wl,--gc-sections -Wl,--strip-all -Wl,--build-id=none -Wl,-z,separate-code -Wl,-z,noexecstack
+LDFLAGS_DEBUG := $(COMMON_FLAGS) \
+	-T minhttpd.ld \
+	-Wl,-n \
+	-Wl,--gc-sections \
+	-Wl,--build-id=none
+
+CFLAGS_RELEASE := $(COMMON_FLAGS) \
+	-O2 \
+	-s \
+	-pedantic \
+	-fno-unwind-tables \
+	-fno-asynchronous-unwind-tables \
+	-fno-stack-protector
+
+LDFLAGS_RELEASE := $(COMMON_FLAGS) \
+ 	-T minhttpd.ld \
+	-Wl,-n \
+	-Wl,--gc-sections \
+	-Wl,--strip-all \
+	-Wl,--build-id=none \
+	-Wl,-z,separate-code \
+	-Wl,-z,noexecstack
 
 .PHONY: all debug release clean
 
@@ -33,7 +60,8 @@ release: CFLAGS := $(CFLAGS_RELEASE)
 release: LDFLAGS := $(LDFLAGS_RELEASE)
 release: $(OBJDIR)/httpd
 
-$(OBJDIR)/httpd: $(OBJS) | $(OBJDIR)
+
+$(OBJDIR)/httpd: $(OBJS) minhttpd.ld | $(OBJDIR)
 	$(CC) $(LDFLAGS) -o $@ $^
 
 # Compile rules (use CFLAGS from the active target)
