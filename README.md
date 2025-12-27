@@ -1,50 +1,75 @@
 # 🚀 minhttpd
 
-A tiny, minimal TCP listener written in C that ***only needs the Linux Kernel***. It listens on port 8080 and echoes received bytes to stdout prefixed with "recieved: ".
+Minimal HTTP 1.0 server written in C (with a tiny assembly `_start`), requiring only the Linux kernel. Demonstrates raw syscalls, socket programming, and simple HTTP file serving.
 
-### Quick facts:
-- **Language:** C, Assembly.
-- **Build:** `Makefile` produces `build/httpd` (release) or `build/httpd-debug` (debug).
-- **License:** MIT — see `LICENCE`.
+## ✨ Features
+- 🪶 **Minimal dependencies:** No libc, only Linux syscalls (see `start.S`).
+- 📄 **HTTP 1.0 file server:** Serves a static file to any client (e.g., browser, curl, ncat).
+- 🍴 **Forks per connection:** Each client handled in a separate process (via `fork`).
+- 🛠️ **Manual socket setup:** No helper libraries, all socket logic in C.
 
-### Why this project? ✨
-- Educational minimal HTTP/TCP server showing raw syscalls and a tiny runtime.
+## 🏗️ Build
 
-## Getting started 🛠️
-
-### 1. Build (release):
+Release build:
 
 ```sh
 make release
+# Output: build/minhttpd
+wc -c build/minhttpd # About 6.6 KB
 ```
 
-### 2. Run:
+Debug build:
 
 ```sh
-./build/httpd
+make debug
+# Output: build/minhttpd-debug
 ```
 
-### 3. Test (from another terminal):
+## ▶️ Usage
+
+```sh
+./build/minhttpd <file-to-serve> [port]
+# Example:
+./build/minhttpd test.html 8080
+```
+
+Default port is 8080 if not specified.
+
+## 🧪 Test
+
+Open another terminal and run:
 
 ```sh
 curl http://127.0.0.1:8080/
 ```
 
-## What to expect ⚠️
-- The server accepts TCP connections on port `8080`. It reads bytes from the client and prints them to stdout prefixed with `received: `.
-- This is not a full HTTP implementation — it's a minimal educational echo-server.
+Or open this URL in a web browser:
 
-## Files of interest 📁
-- `httpd.c` — main server loop, socket setup, read/echo logic.
-- `start.S` — tiny `_start` and syscall wrappers.
-- `Makefile` — build targets `release` and `debug`.
+```
+http://127.0.0.1:8080/
+```
 
-## Development notes 🧪
-- TODO in source: implement `fork` for handling concurrent clients.
-- The build uses `-nostdlib` and static flags; adjust `CFLAGS`/`LDFLAGS` in the `Makefile` for your environment if needed.
+## ⚙️ How it works
+- Listens on the given port (default 8080).
+- Accepts TCP connections, forks a process for each client.
+- Reads HTTP request until an empty line (\r\n\r\n or \n\n).
+- Responds with HTTP/1.1 200 OK and the contents of the specified file.
+- If file not found, responds with 404 Not Found.
+- Closes the connection after serving the file.
 
-## Contributing
-- Feel free to open issues or PRs to add features (proper HTTP parsing, concurrency, logging).
+## 📁 File structure
+- `httpd.c` — Main server logic, socket setup, HTTP parsing, file serving.
+- `start.S` — Custom entry point and syscall wrappers (no libc).
+- `Makefile` — Build rules for debug/release.
+- `test.html` — Example file to serve.
+- `LICENCE` — MIT License.
 
-## License 📄
-- MIT — see `LICENCE` for details.
+## 📝 Notes
+- Only supports serving a single file (no directory listing).
+- Not a full HTTP implementation (no keep-alive, no headers except status).
+- Designed for educational purposes and minimalism.
+- Uses `-nostdlib`, `-ffreestanding`, and static linking.
+
+## 📄 License
+
+MIT — see `LICENCE` for details.
