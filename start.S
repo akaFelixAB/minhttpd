@@ -38,6 +38,7 @@ _start:
     sub rsp, 8          // shadow space
 
     call main
+    mov rdi, rax        // exit code
     call exit
 
     hlt                 // just in case
