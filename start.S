@@ -21,11 +21,15 @@ call_name:; \
 
 make_call(read, 0)
 make_call(write, 1)
+make_call(open, 2)
 make_call(close, 3)
 make_call(socket, 41)
 make_call(accept, 43)
+make_call(shutdown, 48)
 make_call(bind, 49)
 make_call(listen, 50)
+make_call(setsockopt, 54)
+make_call(fork, 57)
 make_call(exit, 60)
 
 .global _start
