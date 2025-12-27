@@ -48,18 +48,18 @@ all: release
 # Debug build (produces build/httpd-debug)
 debug: CFLAGS := $(CFLAGS_DEBUG)
 debug: LDFLAGS := $(LDFLAGS_DEBUG)
-debug: $(OBJDIR)/httpd-debug
+debug: $(OBJDIR)/minhttpd-debug
 
-$(OBJDIR)/httpd-debug: $(OBJS) | $(OBJDIR)
+$(OBJDIR)/minhttpd-debug: $(OBJS) | $(OBJDIR)
 	$(CC) $(LDFLAGS) -o $@ $^
 
 # Release build (produces build/httpd)
 release: CFLAGS := $(CFLAGS_RELEASE)
 release: LDFLAGS := $(LDFLAGS_RELEASE)
-release: $(OBJDIR)/httpd
+release: $(OBJDIR)/minhttpd
 
 
-$(OBJDIR)/httpd: $(OBJS) | $(OBJDIR)
+$(OBJDIR)/minhttpd: $(OBJS) | $(OBJDIR)
 	$(CC) $(LDFLAGS) -o $@ $^
 
 # Compile rules (use CFLAGS from the active target)
